@@ -30,5 +30,8 @@ func (s *MyServer) StartServer() error {
 		})
 	})
 	r.Post("/api/v1/user", s.CreateUser)
+	r.Get("/api/v1/user/{id}", s.GetUser)
+	r.Post("/api/v1/task", s.CreateTask)
+	r.Get("/api/v1/task/{id}", s.GetTask)
 	return http.ListenAndServe(fmt.Sprintf(":%d", s.port), r)
 }

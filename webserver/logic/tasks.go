@@ -6,9 +6,9 @@ import (
 )
 
 type Task struct {
-	Id      int
-	Details string
-	UserId  int
+	Id      int    `json:"id"`
+	Details string `json:"details"`
+	UserId  int    `json:"userId"`
 }
 
 func NewTask(id int, details string, userId int) *Task {
@@ -19,8 +19,12 @@ func NewTask(id int, details string, userId int) *Task {
 	}
 }
 
-func (t *Task) Encode(w io.Writer) error {
+func (u *Task) Encode(w io.Writer) error {
 	encoder := json.NewEncoder(w)
-	return encoder.Encode(t)
+	return encoder.Encode(u)
+}
 
+func (u *Task) Decode(r io.Reader) error {
+	decoder := json.NewDecoder(r)
+	return decoder.Decode(u)
 }

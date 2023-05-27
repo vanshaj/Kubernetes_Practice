@@ -12,7 +12,7 @@ import (
 func Run() error {
 	log.Info().Msg("Starting webserver")
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
-		"localhost", 5432, "", "", "taskdb")
+		"localhost", 5432, "", "", "")
 	dbCon, err := sql.Open("postgres", psqlInfo)
 	if err != nil {
 		log.Error().Msg(err.Error())
