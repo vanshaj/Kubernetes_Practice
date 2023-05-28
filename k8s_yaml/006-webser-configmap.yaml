@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: webserver-configmap
+data:
+  DB_HOST: "service-db"
+  DB_PORT: "5432"
+  DB_NAME: "postgres"
