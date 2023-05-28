@@ -5,11 +5,14 @@ metadata:
   labels:
     app: db
 spec:
+  persistentVolumeClaimRetentionPolicy:
+    whenDeleted: Delete
+    whenScaled: Delete
   replicas: 1
+  serviceName: service-db
   selector:
     matchLabels:
       app: db
-  serviceName: service-db
   template:
     metadata:
       labels:
@@ -17,29 +20,17 @@ spec:
     spec:
       containers:
       - name: postgres
-        image: postgres:latest
+        image: vanshajdocker/postgres:0.1
         ports:
-        - containerPort: 5433
+        - containerPort: 5432
         env:
-        - name: POSTGRES_USER
-          valueFrom:
-            secretKeyRef:
-              name: pg-secret
-              key: POSTGRES_USER
         - name: POSTGRES_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: pg-secret
-              key: POSTGRES_PASSWORD
+          value: postgres
+        - name: POSTGRES_DB
+          value: postgres
         volumeMounts:
-        - name: postgres-init-db
-          mountPath: /docker-entrypoint-initdb.d
         - mountPath: /var/lib/postgresql/data
           name: db-persistent-storage
-      volumes:
-      - name: postgres-init-db
-        configMap:
-          name: postgres-init-config
   volumeClaimTemplates:
   - metadata:
       name: db-persistent-storage

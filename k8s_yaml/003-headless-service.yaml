@@ -6,8 +6,8 @@ metadata:
     app: db
 spec:
   ports:
-  - port: 5431
-    targetPort: 5433
+  - port: 5432
+    targetPort: 5432
   selector:
     app: db
   clusterIP: None
