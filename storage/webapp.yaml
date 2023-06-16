@@ -1,0 +1,104 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: "2023-06-16T15:43:24Z"
+  name: webapp
+  namespace: default
+  resourceVersion: "663"
+  uid: 48a6a059-bedc-4168-939f-9f5a98dee956
+spec:
+  containers:
+  - env:
+    - name: LOG_HANDLERS
+      value: file
+    image: kodekloud/event-simulator
+    imagePullPolicy: Always
+    name: event-simulator
+    resources: {}
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-rm6bc
+      readOnly: true
+    - mountPath: /log
+      name: host-claim
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: true
+  nodeName: controlplane
+  preemptionPolicy: PreemptLowerPriority
+  priority: 0
+  restartPolicy: Always
+  schedulerName: default-scheduler
+  securityContext: {}
+  serviceAccount: default
+  serviceAccountName: default
+  terminationGracePeriodSeconds: 30
+  tolerations:
+  - effect: NoExecute
+    key: node.kubernetes.io/not-ready
+    operator: Exists
+    tolerationSeconds: 300
+  - effect: NoExecute
+    key: node.kubernetes.io/unreachable
+    operator: Exists
+    tolerationSeconds: 300
+  volumes:
+  - name: host-claim
+    persistentVolumeClaim: 
+      claimName: claim-log-1
+  - name: kube-api-access-rm6bc
+    projected:
+      defaultMode: 420
+      sources:
+      - serviceAccountToken:
+          expirationSeconds: 3607
+          path: token
+      - configMap:
+          items:
+          - key: ca.crt
+            path: ca.crt
+          name: kube-root-ca.crt
+      - downwardAPI:
+          items:
+          - fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+            path: namespace
+status:
+  conditions:
+  - lastProbeTime: null
+    lastTransitionTime: "2023-06-16T15:43:24Z"
+    status: "True"
+    type: Initialized
+  - lastProbeTime: null
+    lastTransitionTime: "2023-06-16T15:43:31Z"
+    status: "True"
+    type: Ready
+  - lastProbeTime: null
+    lastTransitionTime: "2023-06-16T15:43:31Z"
+    status: "True"
+    type: ContainersReady
+  - lastProbeTime: null
+    lastTransitionTime: "2023-06-16T15:43:24Z"
+    status: "True"
+    type: PodScheduled
+  containerStatuses:
+  - containerID: containerd://33f7175de8ba209b2c25976f5f94e6b9895cd0aac1f6dc13ef6f2bd3949c8315
+    image: docker.io/kodekloud/event-simulator:latest
+    imageID: docker.io/kodekloud/event-simulator@sha256:1e3e9c72136bbc76c96dd98f29c04f298c3ae241c7d44e2bf70bcc209b030bf9
+    lastState: {}
+    name: event-simulator
+    ready: true
+    restartCount: 0
+    started: true
+    state:
+      running:
+        startedAt: "2023-06-16T15:43:30Z"
+  hostIP: 192.27.128.3
+  phase: Running
+  podIP: 10.244.0.4
+  podIPs:
+  - ip: 10.244.0.4
+  qosClass: BestEffort
+  startTime: "2023-06-16T15:43:24Z"
